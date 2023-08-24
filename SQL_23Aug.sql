@@ -65,9 +65,9 @@ marks int not null,
 grade varchar(36),
 city varchar(25)
 );
-
-insert into student
-(rollno,name,marks,grade,city)
+use college;
+insert into students
+(rollno,stu_name,marks,grade,city)
 values
 (101,"Anil",78,"C","Pune"),
 (102,"Bhumika",93,"A","Mumbai"),
@@ -84,6 +84,151 @@ select distinct city from student;
 
 select *
  from student
- where marks>80;
-select * from student;
+ where marks>80 and city="Mumbai";
+ 
+ select * from student where marks!=90;
+ 
+ select * from student where city="Delhi" or marks>80;
+ 
+ select * from student where marks between 80 and 90;
+ 
+ select * from student
+ where 
+ city in ("Delhi","Mumbai");
+ 
+ select * from student
+ where 
+ marks not in (80,90,85);
+ 
+ select * from student
+ limit 3;
+ 
+ select name from student
+ where 
+ city ="Mumbai" limit 2;
+ 
+ select * from student
+ order by city asc;
+ 
+ select * from student 
+ order by name desc;
+ 
+ select * 
+ from student 
+ order by marks desc
+ limit 3;
+ 
+ select count(marks) from student;
+ 
+ select max(marks) from student;
+ 
+ select min(marks) from student;
+ 
+ select avg(marks) from student;
+ 
+ select city,count(name)
+ from student
+ group by city;
+ 
+ select city,avg(marks)
+ from student 
+ group by city
+ order by city;
+ 
+ select count(name),city
+ from student
+ group by city
+ having max(marks) >90;
+ 
+ select city
+ from student
+ where grade="A"
+ group by city
+ having max(marks) >90
+ order by city desc ;
+ 
+ update student
+ set grade="O"
+ where grade="A";
+ 
+ set sql_safe_updates=0;
+ 
+ update student
+ set marks="82"
+ where marks=12;
+ 
+ update student 
+ set marks=marks+1;
+ 
+ delete from student
+ where marks <33;
+ 
+ create table dept(
+ id int primary key,
+ name varchar(25)
+ );
+ 
+ insert into  dept
+ values
+ (101,"English"),
+ (102,"IT");
+ 
+ select * from dept;
+ 
+ drop table teacher;
+ 
+ create table teacher (
+ id int primary key,
+ name varchar(25),
+ dept_id int,
+ foreign key (dept_id) references dept(id)
+ on delete cascade
+ on  update cascade);
+ 
+ insert  into teacher
+ values
+ (101,"Adam",101),
+ (102,"Eve",102);
+ 
+ update dept 
+ set id=103
+ where id=102;
+ 
+ 
+ select * from teacher;
+ 
+ 
+alter table student
+add column age int;
 
+alter table student
+drop column age ;
+
+alter table student
+rename to students;
+
+alter table students
+change column name stu_name varchar(26);
+
+alter table students
+add column age int not null default 19;
+
+alter table students
+modify age varchar(26);
+
+alter table students
+change column age stu_age int;
+
+truncate table students;
+
+
+ select * from students;
+ 
+ alter table students
+ drop column stu_age;
+ 
+ delete from students
+ where marks<80;
+ 
+ 
+use college;
