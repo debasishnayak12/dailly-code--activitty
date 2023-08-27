@@ -1,3 +1,2 @@
-pandas
-numpy
-seaborn
+pymongo==3.6
+pymongo[srv]
