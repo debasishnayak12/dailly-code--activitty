@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Your Company Name</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa; /* Add a background color for better readability */
+            background-image: url('Designer_madhu_jpg.jpg'); /* Add the background image */
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5); /* Shadow effect */
+        }
+        
+        .header-content {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .company-logo {
+            width: 100px;
+            margin-right: 10px;
+        }
+        
+        .company-details {
+            flex-grow: 1; /* Allow the company details to take up remaining space */
+        }
+        
+        header nav {
+            display: flex; /* Show the navigation */
+            align-items: center; /* Align navigation items vertically */
+        }
+        
+        nav {
+            background-color: #333; /* Background color of the floating box */
+            position: fixed; /* Make the navigation fixed position */
+            top: 180px; /* Adjust the top position */
+            left: 30px; /* Adjust the left position */
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        nav ul li {
+            position: relative;
+        }
+        
+        nav ul li a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #fff;
+        }
+        
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%; /* Adjust the left position */
+            background-color: #333;
+            padding: 10px 0;
+            z-index: 1;
+        }
+        
+        nav ul li:hover ul,
+        nav ul li ul:hover {
+            display: block;
+        }
+        
+        nav ul li ul li {
+            width: 150px;
+        }
+        
+        nav ul li ul li a {
+            padding: 8px 15px;
+            white-space: nowrap; /* Prevent wrapping of text */
+        }
+        
+        main {
+            flex-grow: 1; /* Allow the main content to take up remaining space */
+            padding: 20px;
+        }
+        
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            margin-top: auto; /* Push the footer to the bottom */
+        }
+        
+        @media screen and (min-width: 768px) {
+            .
+        
+            header nav {
+                display: none; /* Hide the navigation on desktop */
+            }
+        
+            main {
+                margin-top: 60px; /* Adjust the margin to accommodate the fixed header */
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <!-- Place your logo here -->
+            <img src="/static/logo_new.jpg" alt="Your Company Logo" class="company-logo">
+            <div class="company-details">
+                <h1>MADHU BUSINESS PVT LTD </h1>
+                <p>Founded in 2023, headquartered in Haryana, India</p>
+                <p>2023 | Gurgaon | Active</p>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#">About &#9662;</a>
+                    <ul>
+                        <li><a href="#">Overview</a></li>
+                        <li><a href="#">History</a></li>
+                        <li><a href="#">Mission & Vision</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Financial &#9662;</a>
+                    <ul>
+                        <li><a href="#">Annual Reports</a></li>
+                        <li><a href="#">Financial Statements</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Controls and Ownership &#9662;</a>
+                    <ul>
+                        <li><a href="#">Corporate Governance</a></li>
+                        <li><a href="#">Ownership Structure</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Rating</a></li>
+                <li><a href="#">Documents</a></li>
+            </ul>
+        </nav>
+        <!-- Your main content goes here -->
+        <p>Welcome to our website!</p>
+    </main>
+    
+    <footer>
+        <p>Disclaimer: This website is for demonstration purposes only.</p>
+        <div class="contact-details">
+            <a href="#">LinkedIn</a>
+            <a href="#">Contact Number</a>
+            <a href="#">Twitter</a>
+        </div>
+        <p>&copy; 2024 Your Company Name. All rights reserved </p>
+    </footer>
+</body>
+</html>
