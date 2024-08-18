@@ -45,13 +45,13 @@ def add_data():
         cur.execute("INSERT INTO ballcoordinates (Ball_id, x, y) VALUES (%s, %s, %s)", (Ball_id, x, y))
         conn.commit()
         conn.close()
+        return jsonify({"Status": "True", "Message": "Data inserted successfully"}), 201
     except :
         return jsonify({"Status": "False", "Message": "Unable to insert data at this moment"}), 500
     finally:
         if conn:
             conn.close()
     
-    return jsonify({"Status": "True", "Message": "Data inserted successfully"}), 201
 
 
 # this is for read data
@@ -78,10 +78,9 @@ def get_one_data(Ball_id):
         result = cur.fetchone()  # Fetch a single record
         conn.close()
         
-        if result:
-            return jsonify(result), 200
-        else:
-            return jsonify({"Error": "Record not found"}), 404
+        if result is None:
+            return jsonify({"Status":"False","Message":"Unabale to fetch data "}), 400
+        return jsonify({"Status":"True","Message":"Successfully fetched data "},{result}),200
     except mysql.connector.Error as err:
         return jsonify({"Error": f"Database error: {err}"}), 500
     
