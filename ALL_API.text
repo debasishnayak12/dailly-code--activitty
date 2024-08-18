@@ -1,0 +1,12 @@
+@API for post data:-"http://127.0.0.1:5000/api/create/ballcoordinates"
+
+@API for GET all data :-"http://127.0.0.1:5000/api/read_all/ballcoordinates"
+
+@API for GET one data :-"http://127.0.0.1:5000/api/read_one/ballcoordinates/<replace with id number>"
+
+@API for PUT method :-"http://127.0.0.1:5000/api/update_all/ballcoordinates/<replace with id number>"
+
+@API for PATCH method :-"http://127.0.0.1:5000/api/update_any/ballcoordinates/<replace with id number>"
+
+@API for DELETE method :-"http://127.0.0.1:5000/api/delete/ballcoordiantes/<replace with id number>"
+
