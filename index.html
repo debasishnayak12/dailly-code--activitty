@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>T-Shirt Designer</title>
+    <link rel="stylesheet" href="static/style.css"> <!-- External CSS -->
+</head>
+<body>
+
+<div class="container">
+    <div id = "textcontainer">
+        <div id="textButtonContainer">
+            <button id="showTextButton" class="text-button">
+                <span class="text-symbol">Text</span>
+            </button>
+            <div id="colorPickerContainer">
+                <h4>Select Text Color:</h4>
+                <button class="colorOption" style="background-color: red;" data-color="#FF0000"></button>
+                <button class="colorOption" style="background-color: green;" data-color="#00FF00"></button>
+                <button class="colorOption" style="background-color: blue;" data-color="#0000FF"></button>
+                <button class="colorOption" style="background-color: black;" data-color="#000000"></button>
+                <button class="colorOption" style="background-color: white;" data-color="#FFFFFF"></button>
+            </div>
+         
+        </div>
+
+        
+
+        <div id="fontStyleContainer">
+            <label for="fontStyle">Font:</label>
+            <select id="fontStyle" onchange="updateFontStyle()" >
+                <option value="Arial" style="font-family: Arial;">Text</option>
+                <option value="Courier New" style="font-family: Courier New;">Text</option>
+                <option value="Georgia" style="font-family: Georgia;">Text</option>
+                <option value="Times New Roman" style="font-family: Times New Roman;">Text</option>
+                <option value="Verdana" style="font-family: Verdana;">Text</option>
+                <option value="Lucida Handwriting" style="font-family: Lucida Handwriting;">Text</option>
+                <option value="fantasy" style="font-family: fantasy;">Text</option>
+                <option value="Papyrus" style="font-family: Papyrus;">Text</option>
+                <option value = 'Brush Script MT' style = "font-family: Brush Script MT;">Text</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <button id="DeleteButton" >Delete</button>
+        
+    </div>
+    
+    <!-- Left side: Logo editing canvas -->
+    <div id="logo-container">
+        <h3>Edit Logo:</h3>
+        <div id="logoCanvasContainer" class="transparent-style">
+            <canvas id="logoCanvas" width="1000" height="1000"></canvas>
+            <!--<div>
+            <input type="text" id="text-input"  oninput="updateText()">
+            </div>-->
+        </div>
+        
+        <div id="logoInputContainer">
+            <p> Upload Your Logo :</p>
+            <button id="customFileButton">Choose File</button>
+            <input type="file" id="logoInput" accept="image/*" />
+        </div>
+
+        <div>
+            <button id="refreshButton">Refresh Canvas</button>
+        </div>
+    </div>
+    <div id = "downloadcontainer">
+        
+        <div id="canvasDbcontainer">
+            <canvas id="canvasDB" width="1000" height="1000"></canvas>
+        </div>
+        <p>Downloaded Logo</p>
+    </div>
+
+    <!-- Create button -->
+    <div id="createButtonContainer">
+        <button id="createButton">Create </button>
+        <button id="PreviousButton">Previous </button>
+
+        
+
+    </div>
+    
+
+    <!-- Right side: T-shirt preview canvas and options -->
+    <div id="tshirt-container">
+        <h3>Preview T-Shirt:</h3>
+        <div id="tshirtCanvasContainer">
+            <canvas id="tshirtCanvas" width="1000" height="1000"></canvas>
+            
+        </div>
+
+        <div id="saveButtonContainer">
+            <button id="saveButton">Save And Download</button>
+        </div>
+    </div>
+    
+    
+    <div>
+        
+        <h3>Select a T-Shirt:</h3>
+        <div class="thumbnail-grid" id="tshirtThumbnails" style="display: flex; flex-direction: column;">
+            <!-- Thumbnails will be inserted here dynamically -->
+            <button class="thumbnail-button"><img src="static\tshirt_black.png" data-url="static\tshirt_black.png" alt="T-Shirt 1"></button>
+            <button class="thumbnail-button"><img src="static\tshirt_red.png" data-url="static\tshirt_red.png" alt="T-Shirt 2"></button>
+            <button class="thumbnail-button"><img src="static\t_shirst.png" data-url="static\t_shirst.png" alt="T-Shirt 3"></button>
+            <button class="thumbnail-button"><img src="static\white_tshirt.png" data-url = "static\white_tshirt.png" alt = "T-shirt 4"></button>
+        </div>  
+    </div>
+</div>
+
+<!-- Saved images section -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+<script src="static/script.js"></script> <!-- External JS -->
+<!--<script src="static/textedit.js"></script>-->
+</body>
+</html>
