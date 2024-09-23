@@ -1,24 +1,46 @@
-from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
+from flask import Flask,render_template,request,jsonify
 import mysql.connector
 
-app = Flask(__name__)
+
+app =Flask(__name__)
+
+def db_connection():
+    conn = mysql.connector.connect(
+        host ="localhost",
+        user = "root",
+        passwd ="",
+        db = "api_test"
+    )
+    return conn
 
 @app.route('/')
-def home():
-    return render_template('index.html')
-
-# @app.route('/save-measurement', methods=['POST'])
-# def save_measurement():
-#     data = request.get_json()
-#     zoom_percentage = data.get('zoom_percentage')
-#     distance_to_top = data.get('distance_to_top')
-#     distance_to_right = data.get('distance_to_right')
+def index():
+    return render_template("index.html")
     
-#     # Save these values to your database
-#     save_to_database(zoom_percentage, distance_to_top, distance_to_right)
-    
-#     return jsonify({"message": "Measurements saved successfully"}), 200
+@app.route('/postdata',methods=["POST"])
+def postdata():
+    if request.method =="POST":
+        data = request.json
+        name = data.get('name')
+        phone = data.get('phone')
+        print(name,phone)
+        if not name or not phone  :
+            return jsonify({"Error":"anme and phone data required"})
+        try:
+            conn = db_connection()
+            cur = conn.cursor(dictionary=True)
+            query = "insert into customers(Name,Phone) values(%s,%s)"
+            val = (name,phone)
+            cur.execute(query,val)
+            conn.commit()
+            return jsonify({"Status":"True","message":"Insert data"})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+        except mysql.connector.Error as e:
+            return jsonify({"Status":"False","Message":f"{e}"})
+        # with open(f"{request.form.get('name')}.txt" ,"w") as f:
+        #     f.write("POST created ")
+        
+
+        
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',debug=True)
