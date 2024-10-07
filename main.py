@@ -1,73 +1,90 @@
-from fastapi import FastAPI,Depends,HTTPException
-from sqlalchemy.orm import Session 
-import schemas,models
-from database import engine,get_db
-from models import User as modeluser
-from schemas import User
+from fastapi import FastAPI,Depends,HTTPException #Form,UploadFile,File for file uplaods
+from sqlalchemy.orm import Session
+# from sqlalchemy import func
+from database import get_db
+from  models import User as modeluser
+# from typing import Optional
+import uvicorn 
+import schemas
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+import os
+# import numpy as np
+from datetime import datetime
 
+
+# models.Base.metadata.create_all(bind=engine)  #uncomment this to create table if not exists
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change to specific domains in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-models.Base.metadata.create_all(bind=engine)
+def validate_data(user,db):
+    if  (user.name).isdigit() or  user.name=="":
+        return "Enter a valid Name"
+    if "@" not in str(user.email) or "." not in str(user.email) or user.email=="":
+        return "Enter a valid email"
+    if user.mobile is not None:
+        if  not len(str(user.mobile))==10 or user.mobile=="":
+            return "Enter a valid Mobile number"
+        existing_mobile = db.query(modeluser).filter(modeluser.mobile == user.mobile).first()
+        if existing_mobile:
+            return "Mobile Already Exist"
+    existing_user = db.query(modeluser).filter(modeluser.email == user.email).first()
+    if existing_user:
+        return "User Email Already Exist"
+    return None
+    # Check if the mobile number already exists
 
-# create user 
-
-@app.post("/users/add_user",response_model=dict)
-def create_user(user:schemas.UserCreate,db:Session = Depends(get_db)):
-    db_user = modeluser(name = user.name,email=user.email ,age = user.age)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    response = {"response":"true","message":"Success"}
-    return response
-
-#get_all_users
-@app.post("/users/get_all")
-def get_users(db : Session = Depends(get_db)):
-    users = db.query(modeluser).all()
-    
-    response = {"response":"true","message":"Success","user":users}
-    
-    return response
-#get_one_data
-@app.post("/users/get_one")
-def get_user(userrequest:schemas.Userrequest,db:Session = Depends(get_db)):
-    user = db.query(modeluser).filter(modeluser.id == userrequest.id).first()
-    if user is None:
-        response = {"response":"false","message":"Failed","Error":"user id not found"}
-        return response
-    response = {"response":"true","message":"Success","user":user}
-    return response
-#update user 
-@app.post("/users/update")
-def user_update(user_update:schemas.UserUpdate,db:Session=Depends(get_db)):
-    user = db.query(modeluser).filter(modeluser.id ==user_update.id).first()
-    print("user id :",user_update.id)
-    if user is None:
-        raise HTTPException(status_code=404,detail = "user not found !")
-    
-    if user_update.name:
-        user.name = user_update.name
+@app.post('/setuser')
+async def CreateUser(user:schemas.UserCreate,db:Session = Depends(get_db)):
+    try:
+        db_user=modeluser(
+            
+            name=user.name,
+            mobile=user.mobile , # for optional add (if user.mobile else None)
+            email=user.email
+            
+        )
+        validation_error=validate_data(user,db)
+        if validation_error:
+            response =  {"status":"false","message":validation_error}
+            return JSONResponse(content=response,status_code=400)
         
-    if user_update.email:
-        user.email = user_update.email
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        response = {"status":"true","message":"Inserted Succeessfully"}
+        return JSONResponse(content=response,status_code=201)
+    except Exception as e:
+        response = {"status":"false","message":"Failed","error":f"{e}"}
+        return JSONResponse(content=response,status_code=500)
         
-    db.commit()
-    db.refresh(user)
-    response = {"response":"true","message":"Success"}
-    return response
-
-#user delete
-@app.post("/users/delete",response_model=dict)
-def user_delete(user_id:schemas.Userrequest,db:Session = Depends(get_db)):
-    user = db.query(modeluser).filter(modeluser.id == user_id.id).first()
-    if user is None:
-        raise HTTPException(status_code = 404,detail = "user not Found")
-    db.delete(user)
-    db.commit()
-    response = {"response":"true","message":"Success"}
-    return response
+@app.post('/getuser')
+async def getuser(user:schemas.Userrequest,db:Session=Depends(get_db)):
+    userid=user.id
+    if userid is None:
+        return JSONResponse(content={"status": "false", "message": "User not found"}, status_code=404)
+    try:
+        db_user = db.query(modeluser).filter(userid==modeluser.id).first()
+        ordered_user = {
+            "userid":db_user.id,
+            "name":db_user.name,
+            "mobile":db_user.mobile,
+            "email":db_user.email,
+            "inserttime":db_user.insert_time.isoformat() if db_user.insert_time else None,
+        }
+        response = {"status":"true","message":"Getuser Successfully","user":ordered_user}
+        return JSONResponse(content=response,status_code=200)
+        # return response
+    except Exception as e:
+        response = {"status":"false","message":"Failed","error":f"{e}"}
+        return JSONResponse(content=response,status_code=500)
         
-    
-    
-    
-
+        
+if __name__ =="__main__":
+    uvicorn.run("main:app",port = 8080 ,reload=False)
