@@ -13,7 +13,6 @@ import os
 from datetime import datetime
 
 
-# models.Base.metadata.create_all(bind=engine)  #uncomment this to create table if not exists
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -47,7 +46,8 @@ async def CreateUser(user:schemas.UserCreate,db:Session = Depends(get_db)):
             
             name=user.name,
             mobile=user.mobile , # for optional add (if user.mobile else None)
-            email=user.email
+            email=user.email,
+            status = user.status if user.status else 0
             
         )
         validation_error=validate_data(user,db)
@@ -76,6 +76,7 @@ async def getuser(user:schemas.Userrequest,db:Session=Depends(get_db)):
             "name":db_user.name,
             "mobile":db_user.mobile,
             "email":db_user.email,
+            "status":db_user.status,
             "inserttime":db_user.insert_time.isoformat() if db_user.insert_time else None,
         }
         response = {"status":"true","message":"Getuser Successfully","user":ordered_user}
@@ -84,7 +85,47 @@ async def getuser(user:schemas.Userrequest,db:Session=Depends(get_db)):
     except Exception as e:
         response = {"status":"false","message":"Failed","error":f"{e}"}
         return JSONResponse(content=response,status_code=500)
+#get last user 
+@app.post('/get_lastuser')
+async def last_user(db:Session=Depends(get_db)):
+    try:
+        db_user = db.query(modeluser).order_by(modeluser.id.desc()).first()
+   
+        user = {
+            "id":db_user.id,
+            "name":db_user.name,
+            "mobile":db_user.mobile,
+            "email":db_user.email,
+            "status":db_user.status,
+            "insert_time":db_user.insert_time.isoformat() if db_user.insert_time else None
+        }
+        
+        response = {"status":"true","message":"Get lastuser successfully ","user":user}
+        
+        return JSONResponse(content=response,status_code = 200)
+    except Exception as e:
+        response =  {"status":"false","message":"Failed","Error":f"{e}"}
+        return JSONResponse(content=response,status_code = 400)
+    
+@app.post('/setstatus')
+async def setstatus(user:schemas.StatusRequest,db:Session=Depends(get_db)):
+    try:
+        user_id = user.id
+        status = user.status
+        
+        db_user = db.query(modeluser).filter(user_id==modeluser.id).first()
+        db_user.status = status
+        db.commit()
+        db.refresh(db_user)
+        response = {"status":"true","messgae":"Status Updated Successfully"}
+        return JSONResponse(content=response,status_code=201)
+    except Exception as e:
+        response = {"status":"false","messgae":"Failed","error":f"e"}
+        return JSONResponse(content=response,status_code=400)
+        
+    
+    
         
         
 if __name__ =="__main__":
-    uvicorn.run("main:app",port = 8080 ,reload=False)
+    uvicorn.run("main:app",port = 8080,reload = False)
