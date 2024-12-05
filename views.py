@@ -1,39 +1,22 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import user
-from .forms import UserForm  # Create a form to simplify CRUD operations
 
-# CREATE
-def create_user(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list_books')
-    else:
-        form = UserForm()
-    return render(request, 'myapp/book_form.html', {'form': form})
 
-# READ
-def list_users(request):
-    User = user.objects.all()
-    return render(request, 'myapp/book_list.html', {'user': User})
+from django.http import HttpResponse
+from django.template import loader
+from .models import Member
 
-# UPDATE
-def update_user(request, pk):
-    User = get_object_or_404(user, pk=pk)
-    if request.method == "POST":
-        form = UserForm(request.POST, instance=User)
-        if form.is_valid():
-            form.save()
-            return redirect('list_books')
-    else:
-        form = UserForm(instance=User)
-    return render(request, 'myapp/book_form.html', {'form': form})
+def members(request):
+  mymembers = Member.objects.all().values()
+  template = loader.get_template('all_members.html')
+  context = {
+    'mymembers': mymembers,
+  }
+  return HttpResponse(template.render(context, request))
 
-# DELETE
-def delete_user(request, pk):
-    User = get_object_or_404(user, pk=pk)
-    if request.method == "POST":
-        User.delete()
-        return redirect('list_books')
-    return render(request, 'myapp/book_confirm_delete.html', {'User': User})
+
+def details(request, id):
+  mymember = Member.objects.get(id=id)
+  template = loader.get_template('details.html')
+  context = {
+    'mymember': mymember,
+  }
+  return HttpResponse(template.render(context, request))
