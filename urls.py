@@ -1,13 +1,22 @@
-from django.urls import path
-from . import views1 #import ItemAPIView,views1
+"""myproject URL Configuration
 
-# urlpatterns = [
-#     path('items/', ItemAPIView.as_view(), name='item-api'),
-# ]
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path,include
+
 urlpatterns = [
-    path('create',views1.createuser, name='create'),
-    path('getusers',views1.getusers, name='getusers'),
-    path('getuser',views1.getuser, name='getuser'),
-    path('update',views1.updateuser, name='create'),
-    path('delete',views1.deleteuser, name='create')
+    path('admin/', admin.site.urls),
+    path('myapp/', include('myapp.urls')),
 ]
