@@ -1,3 +1,15 @@
+#https://support.google.com/accounts/answer/185833?hl=en
+#above link to create app password to use in settings in email passowrd 
+"""
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # For Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'nayakdebasish7205@gmail.com'
+EMAIL_HOST_PASSWORD = 'replace with apppassword'
+"""
+
+#Above code to placed in settings 
 from django.shortcuts import render
 
 # Create your views here.
