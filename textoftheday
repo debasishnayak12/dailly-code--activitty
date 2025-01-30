@@ -1,0 +1,8 @@
+https://api2.sprinklr.com/prod2/api/v2/marketing-journey/triggerWithNewProfile
+
+ CURLOPT_HTTPHEADER => array(
+            'Key: 9kheqth5j9dh4dqdk2ykgdq7',
+            'Content-Type: application/json',
+            'Authorization: Bearer CCEx6Nu3WbC62rL8IqVSZH+AM9j4oP9E6SgxwJ+D7sYzZTgyNDQxNzk1ODgyZTg3ODljZjQwNDNmMjNiYTZlNg=='
+        ),
+        ));
